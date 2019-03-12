@@ -14,5 +14,45 @@
   <context:annotation-config/>
 
   <bean class="com.mine.jms.config.ApplicationConfiguration"/>
+
+  <!-- Datasource-->
+  <context:component-scan base-package="com.mine.jms.orm"/>
+
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+    <property name="url" value="jdbc:sqlserver://192.168.46.132:1433;databaseName=activemq"/>
+    <property name="username" value="sa"/>
+    <property name="password" value="Aa123456"/>
+  </bean>
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+        <prop key="hibernate.show_sql">true</prop>
+        <prop key="hibernate.format_sql">true</prop>
+        <prop key="hibernate.use_sql_comments">true</prop>
+        <prop key="hibernate.jdbc.batch_size">50</prop>
+        <prop key="hibernate.transaction.flush_before_completion">true</prop>
+        <prop key="transaction.auto_close_session">true</prop>
+        <prop key="connection.release_mode">auto</prop>
+        <prop key="hibernate.classloading.use_current_tccl_as_parent">false</prop>
+        <prop key="hibernate.connection.isolation">4096</prop>
+      </props>
+    </property>
+    <property name="packagesToScan"
+              value="com.mine.jms.orm"/>
+  </bean>
+
+
+  <bean id="transactionManager"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="nestedTransactionAllowed" value="true"/>
+  </bean>
+
+  <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
 

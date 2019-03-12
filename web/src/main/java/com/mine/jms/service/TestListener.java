@@ -22,6 +22,7 @@ public class TestListener implements MessageListener{
   @Override
   public void onMessage(Message message) {
     try{
+      Thread.sleep(100001);
       logger.debug("onMessage: "+message.getJMSMessageID());
       logger.debug("onMessage: " + ((ActiveMQTextMessage) message).getText());
     }catch(Exception e){

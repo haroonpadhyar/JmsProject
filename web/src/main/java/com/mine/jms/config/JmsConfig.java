@@ -30,6 +30,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  *         Created on 3/11/19 6:44 PM.
  */
 public class JmsConfig {
+  private static final String BROKER_URL ="tcp://localhost:6616";
 
   @Autowired
   private DataSource dataSource;
@@ -37,7 +38,7 @@ public class JmsConfig {
   @Bean
   public BrokerService broker() throws Exception{
     BrokerService broker = new BrokerService();
-    broker.addConnector("tcp://localhost:6616");
+    broker.addConnector(BROKER_URL);
     broker.setPersistent(true);
     broker.setBrokerName("Broker: "+ InetAddress.getLocalHost().getHostName());
     broker.setPersistenceAdapter(persistenceAdapter());
@@ -93,7 +94,7 @@ public class JmsConfig {
   @Bean
   public ConnectionFactory connectionFactory() {
     ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-    connectionFactory.setBrokerURL("tcp://localhost:6616");
+    connectionFactory.setBrokerURL(BROKER_URL);
 
 //    RedeliveryPolicyMap redeliveryPolicyMap = connectionFactory.getRedeliveryPolicyMap();
 //    RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();

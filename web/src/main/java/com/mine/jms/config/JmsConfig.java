@@ -1,5 +1,7 @@
 package com.mine.jms.config;
 
+import java.net.InetAddress;
+import java.util.Collections;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageListener;
 import javax.jms.Queue;
@@ -8,22 +10,20 @@ import javax.sql.DataSource;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.broker.region.policy.*;
+import org.apache.activemq.broker.region.policy.IndividualDeadLetterStrategy;
+import org.apache.activemq.broker.region.policy.PolicyEntry;
+import org.apache.activemq.broker.region.policy.PolicyMap;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.store.PersistenceAdapter;
 import org.apache.activemq.store.jdbc.JDBCPersistenceAdapter;
 import org.apache.activemq.store.jdbc.LeaseDatabaseLocker;
-import org.apache.activemq.store.jdbc.adapter.TransactJDBCAdapter;
+import org.apache.activemq.store.jdbc.adapter.MySqlJDBCAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import java.net.InetAddress;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Haroon Anwar Padhyar.
@@ -56,12 +56,28 @@ public class JmsConfig {
     IndividualDeadLetterStrategy deadLetterStrategy = new IndividualDeadLetterStrategy();
     deadLetterStrategy.setQueuePrefix("DLQ.");
     deadLetterStrategy.setProcessExpired(false);
+    deadLetterStrategy.setExpiration(11*1000);
     policyEntry.setDeadLetterStrategy(deadLetterStrategy);
-    policyEntry.setExpireMessagesPeriod(2*60*1000);
+    policyEntry.setExpireMessagesPeriod(2*60*1000); //how often the broker should look for messages whose expiration date has arrived, and process them (e.g. by moving them to the DLQ)
+
     policyMap.setPolicyEntries(Collections.singletonList(policyEntry));
     return policyMap;
   }
 
+//  SQL Server
+//  private PersistenceAdapter persistenceAdapter() throws Exception{
+//    JDBCPersistenceAdapter persistenceAdapter = new JDBCPersistenceAdapter();
+//    persistenceAdapter.setDataSource(dataSource);
+//    LeaseDatabaseLocker locker = new LeaseDatabaseLocker();
+//    locker.setLockAcquireSleepInterval(1000L);
+//    persistenceAdapter.setLocker(locker);
+//    persistenceAdapter.setLockKeepAlivePeriod(5000L);
+//    persistenceAdapter.setCreateTablesOnStartup(true);
+//    persistenceAdapter.setAdapter(new TransactJDBCAdapter()); // A JDBC Adapter for Transact-SQL based databases such as SQL Server or Sybase
+//    return persistenceAdapter;
+//  }
+
+//  MySQL
   private PersistenceAdapter persistenceAdapter() throws Exception{
     JDBCPersistenceAdapter persistenceAdapter = new JDBCPersistenceAdapter();
     persistenceAdapter.setDataSource(dataSource);
@@ -70,7 +86,7 @@ public class JmsConfig {
     persistenceAdapter.setLocker(locker);
     persistenceAdapter.setLockKeepAlivePeriod(5000L);
     persistenceAdapter.setCreateTablesOnStartup(true);
-    persistenceAdapter.setAdapter(new TransactJDBCAdapter());
+    persistenceAdapter.setAdapter(new MySqlJDBCAdapter());
     return persistenceAdapter;
   }
 

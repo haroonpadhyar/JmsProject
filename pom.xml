@@ -31,6 +31,7 @@
 		<sql.version>5.1.9</sql.version>
 		<junit.version>4.10</junit.version>
 		<aspectj.version>1.8.10</aspectj.version>
+    <sql.version>5.1.9</sql.version>
 	</properties>
 
 	<dependencyManagement>
@@ -111,17 +112,52 @@
 				<version>4.0</version>
 			</dependency>
 
+      <!-- MySQL -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${sql.version}</version>
+      </dependency>
+
 			<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jms</artifactId>
 			<version>${spring.version}</version>
 		  </dependency>
 
-		  <dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-broker -->
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-broker</artifactId>
+        <version>5.15.8</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-client -->
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-client</artifactId>
+        <version>5.15.8</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-jdbc-store -->
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-jdbc-store</artifactId>
+        <version>5.15.8</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-kahadb-store -->
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-kahadb-store</artifactId>
+        <version>5.15.8</version>
+      </dependency>
+
+
+
+      <!--<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>
 			<version>5.7.0</version>
-		  </dependency>
+		  </dependency>-->
 
 			<dependency>
 				<groupId>org.aspectj</groupId>

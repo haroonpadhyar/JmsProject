@@ -81,10 +81,34 @@
       <artifactId>spring-jms</artifactId>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-client -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-core</artifactId>
+      <artifactId>activemq-broker</artifactId>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-client -->
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-client</artifactId>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-jdbc-store -->
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-jdbc-store</artifactId>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-kahadb-store -->
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-kahadb-store</artifactId>
+    </dependency>
+
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.activemq</groupId>-->
+      <!--<artifactId>activemq-core</artifactId>-->
+    <!--</dependency>-->
 
     <dependency>
         <groupId>org.hibernate</groupId>
@@ -120,6 +144,13 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
     </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>

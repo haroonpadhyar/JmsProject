@@ -15,22 +15,34 @@
 
   <bean class="com.mine.jms.config.ApplicationConfiguration"/>
 
-  <!-- Datasource-->
   <context:component-scan base-package="com.mine.jms.orm"/>
 
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <!-- Datasource-->
+
+  <!-- SQL Server -->
+  <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
     <property name="url" value="jdbc:sqlserver://192.168.46.132:1433;databaseName=activemq"/>
     <property name="username" value="sa"/>
     <property name="password" value="Aa123456"/>
+  </bean>-->
+
+  <!-- MySQL Server -->
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://127.0.0.1:3306/mydb"/>
+    <property name="username" value="root"/>
+    <property name="password" value="admin"/>
   </bean>
+
 
   <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
 
     <property name="hibernateProperties">
       <props>
-        <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+        <!--<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>-->
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
         <prop key="hibernate.show_sql">true</prop>
         <prop key="hibernate.format_sql">true</prop>
         <prop key="hibernate.use_sql_comments">true</prop>

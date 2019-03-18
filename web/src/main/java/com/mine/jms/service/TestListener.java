@@ -22,11 +22,13 @@ public class TestListener implements MessageListener{
   @Override
   public void onMessage(Message message) {
     try{
-      Thread.sleep(100001);
       logger.debug("onMessage: "+message.getJMSMessageID());
+      Thread.sleep(5*1001);
       logger.debug("onMessage: " + ((ActiveMQTextMessage) message).getText());
+      throw new RuntimeException("AAA");
     }catch(Exception e){
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 }

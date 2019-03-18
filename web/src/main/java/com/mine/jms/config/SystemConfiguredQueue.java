@@ -6,7 +6,9 @@ package com.mine.jms.config;
  */
 public enum SystemConfiguredQueue {
   TestQ("test.Q"),
-  InboundQ("inbound.Q");
+  DLQ_TestQ("DLQ.test.Q"),
+  InboundQ("inbound.Q"),
+  DLQ_InboundQ("DLQ.inbound.Q");
 
   private String physicalQueue;
 

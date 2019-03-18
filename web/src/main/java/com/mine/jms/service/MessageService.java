@@ -5,9 +5,11 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mine.jms.config.SystemConfiguredQueue;
+import com.mine.jms.orm.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,8 +30,22 @@ public class MessageService {
   @Autowired
   private JmsTemplate jmsTemplate;
 
+  @Autowired
+  private PersonRepository personRepository;
+
   @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
   public void sendMessage(SystemConfiguredQueue queue, Serializable message) {
+
+    // Just for Transaction Testing purpose.
+//    jmsTemplate = new JmsTemplate(){
+//      @Override
+//      public void convertAndSend(String destinationName, Object message) throws JmsException {
+//        throw new JmsException("AAA"){
+//
+//        };
+//      }
+//    };
+
     if(logger.isInfoEnabled()) {
       logger.info("Entering MessageService.sendMessage(SystemConfiguredQueue queue, Serializable message)");
     }
@@ -40,6 +56,9 @@ public class MessageService {
     }
 
     jmsTemplate.convertAndSend(queue.getPhysicalQueue(), message);
+//    System.out.println("DB call now");
+//    personRepository.saveRecord();
+
     if (logger.isDebugEnabled()) {
       logger.debug("Message successfully sent to destination!");
     }
@@ -54,12 +73,12 @@ public class MessageService {
       logger.debug("In MessageService.sendJsonMessage");
     }
 
-    String messageXML = marshalMessage(message);
+    String messageJSON = marshalMessage(message);
     if (logger.isDebugEnabled()) {
-      logger.debug("Message to send in JSON: " + messageXML);
+      logger.debug("Message to send in JSON: " + messageJSON);
       logger.debug("Destination Queue: " + queue);
     }
-    sendMessage(queue, messageXML);
+    sendMessage(queue, messageJSON);
   }
 
   private String marshalMessage(Serializable message) {

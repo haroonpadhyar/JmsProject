@@ -22,11 +22,13 @@ public class InboundListener implements MessageListener{
   @Override
   public void onMessage(Message message) {
     try{
-      Thread.sleep(10000);
+      Thread.sleep(1000);
       logger.debug("onMessage: "+message.getJMSMessageID());
       logger.debug("onMessage: " + ((ActiveMQTextMessage) message).getText());
+      throw new RuntimeException("AAAA");
     }catch(Exception e){
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
 
   }

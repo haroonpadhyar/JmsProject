@@ -23,6 +23,7 @@ import org.apache.activemq.store.jdbc.adapter.TransactJDBCAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
@@ -34,7 +35,8 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 public class JmsConfig {
 //  private static final String BROKER_URL ="tcp://localhost:6616";
-  private static final String BROKER_URL ="vm://localhost"; // will use KahaDB persistence
+//  private static final String BROKER_URL ="vm://localhost"; // will use KahaDB persistence
+  private static final String BROKER_URL ="vm://localhost?marshal=false"; // will use KahaDB persistence
 //  private static final String BROKER_URL ="vm://broker1?marshal=false&broker.persistent=false";
 
 
@@ -59,6 +61,8 @@ public class JmsConfig {
    *   <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" depends-on="broker">
    *     <property name="brokerURL" value="vm://localhost"/>
    *   </bean>
+   *
+   *   Or Use @DependsOn in Java config
    */
 
   @Autowired
@@ -69,9 +73,9 @@ public class JmsConfig {
   public BrokerService broker() throws Exception{
     BrokerService broker = new BrokerService();
     broker.addConnector(BROKER_URL);
-    broker.setPersistent(true); // By default KahaDB and location is tomcat\bin\activemq-data\localhost\KahaDB
+    broker.setPersistent(false); // By default KahaDB and location is tomcat\bin\activemq-data\localhost\KahaDB
     broker.setBrokerName("Broker: "+ InetAddress.getLocalHost().getHostName());
-    broker.setPersistenceAdapter(persistenceAdapter());
+//    broker.setPersistenceAdapter(persistenceAdapter());
     broker.setUseJmx(true);
     broker.setDestinationPolicy(policyMap());
 
@@ -129,6 +133,7 @@ public class JmsConfig {
 //  }
 
   @Bean
+  @DependsOn({"broker"})
   public ConnectionFactory connectionFactory() {
     ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
     connectionFactory.setBrokerURL(BROKER_URL);
